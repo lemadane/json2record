@@ -1,8 +1,8 @@
-# Record Data (`io.lemonade:record-data`)
+# Json2Record
 
-Production-ready, zero-dependency standard Java 17+ library for bi-directional mapping between XML/JSON documents and strongly typed Java records.
+Production-ready, zero-dependency standard Java 17+ library for bi-directional mapping between JSON/XML documents and strongly typed Java records.
 
-Built purely on Java reflection and standard APIs, `record-data` requires no third-party XML/JSON libraries and works seamlessly across Spring Boot, Quarkus, Micronaut, and standalone JVM applications.
+Built purely on Java reflection and standard APIs, `Json2Record` requires no third-party XML/JSON libraries and works seamlessly across Spring Boot, Quarkus, Micronaut, and standalone JVM applications.
 
 ---
 
@@ -115,8 +115,8 @@ XML attributes map to **matching mutable static fields** declared directly on th
 Example record with XML attribute mapping:
 
 ```java
-public record FacilityInboundEvent(
-        VanLoadScan VanLoadScan,
+public record RestaurantOrderEvent(
+        KitchenOrderScan KitchenOrderScan,
         PlaceHolder PlaceHolder
 ) {
     private static String Version;
@@ -156,27 +156,27 @@ XML element/attribute names and JSON keys containing characters problematic in J
 **XML Input:**
 
 ```xml
-<FacilityInboundEvent Version="1.0">
-    <VanLoadScan Version="1.0">
-        <FacilityID>0603</FacilityID>
-        <ScanType>V3</ScanType>
-        <ScannedBarcode>9611019061319607196193</ScannedBarcode>
-        <ScanDateTime>
-            <Date>20210804</Date>
-            <Time24hr>072512</Time24hr>
+<RestaurantOrderEvent Version="1.0">
+    <KitchenOrderScan Version="1.0">
+        <RestaurantID>0603</RestaurantID>
+        <OrderType>DineIn</OrderType>
+        <OrderTicketNumber>9611019061319607196193</OrderTicketNumber>
+        <OrderTimestamp>
+            <Date>20260721</Date>
+            <Time24hr>123045</Time24hr>
             <Microseconds>527412</Microseconds>
-        </ScanDateTime>
+        </OrderTimestamp>
         <PlaceHolder/>
-    </VanLoadScan>
+    </KitchenOrderScan>
     <PlaceHolder/>
-</FacilityInboundEvent>
+</RestaurantOrderEvent>
 ```
 
 **Java Records:**
 
 ```java
-public record FacilityInboundEvent(
-        VanLoadScan VanLoadScan,
+public record RestaurantOrderEvent(
+        KitchenOrderScan KitchenOrderScan,
         PlaceHolder PlaceHolder
 ) {
     private static String Version;
@@ -186,11 +186,11 @@ public record FacilityInboundEvent(
     }
 }
 
-public record VanLoadScan(
-        String FacilityID,
-        String ScanType,
-        String ScannedBarcode,
-        ScanDateTime ScanDateTime,
+public record KitchenOrderScan(
+        String RestaurantID,
+        String OrderType,
+        String OrderTicketNumber,
+        OrderTimestamp OrderTimestamp,
         PlaceHolder PlaceHolder
 ) {
     private static String Version;
@@ -200,7 +200,7 @@ public record VanLoadScan(
     }
 }
 
-public record ScanDateTime(
+public record OrderTimestamp(
         String Date,
         String Time24hr,
         String Microseconds
@@ -212,9 +212,9 @@ public record PlaceHolder() {}
 **Usage:**
 
 ```java
-final var event = XML.parse(FacilityInboundEvent.class, xml);
-final String facilityID = event.VanLoadScan().FacilityID();
-final String version = FacilityInboundEvent.version();
+final var event = XML.parse(RestaurantOrderEvent.class, xml);
+final String restaurantID = event.KitchenOrderScan().RestaurantID();
+final String version = RestaurantOrderEvent.version();
 final String outputXml = XML.stringify(event);
 ```
 
@@ -223,37 +223,37 @@ final String outputXml = XML.stringify(event);
 **XML Input:**
 
 ```xml
-<fxg:FacilityInboundEvent xmlns:fxg="urn:fedex:facility">
-    <fxg:VanLoadScan>
-        <fxg:FacilityID>0603</fxg:FacilityID>
-    </fxg:VanLoadScan>
-</fxg:FacilityInboundEvent>
+<rest:RestaurantOrderEvent xmlns:rest="urn:restaurant:kitchen">
+    <rest:KitchenOrderScan>
+        <rest:RestaurantID>0603</rest:RestaurantID>
+    </rest:KitchenOrderScan>
+</rest:RestaurantOrderEvent>
 ```
 
 **Java Records:**
 
 ```java
-public record fxg$FacilityInboundEvent(
-        fxg$VanLoadScan fxg$VanLoadScan
+public record rest$RestaurantOrderEvent(
+        rest$KitchenOrderScan rest$KitchenOrderScan
 ) {
-    private static String xmlns$fxg;
+    private static String xmlns$rest;
 
     public static String namespace() {
-        return xmlns$fxg;
+        return xmlns$rest;
     }
 }
 
-public record fxg$VanLoadScan(
-        String fxg$FacilityID
+public record rest$KitchenOrderScan(
+        String rest$RestaurantID
 ) {}
 ```
 
 **Usage:**
 
 ```java
-final var event = XML.parse(fxg$FacilityInboundEvent.class, xml);
-final String facilityID = event.fxg$VanLoadScan().fxg$FacilityID();
-final String ns = fxg$FacilityInboundEvent.namespace(); // "urn:fedex:facility"
+final var event = XML.parse(rest$RestaurantOrderEvent.class, xml);
+final String restaurantID = event.rest$KitchenOrderScan().rest$RestaurantID();
+final String ns = rest$RestaurantOrderEvent.namespace(); // "urn:restaurant:kitchen"
 ```
 
 ### 3. JSON Mapping
@@ -263,14 +263,14 @@ final String ns = fxg$FacilityInboundEvent.namespace(); // "urn:fedex:facility"
 ```json
 {
   "eventMessageCount": 2,
-  "vanLoadScans": [
+  "kitchenOrderScans": [
     {
-      "facilityID": "0603",
-      "scanType": "V3"
+      "restaurantID": "0603",
+      "orderType": "DineIn"
     },
     {
-      "facilityID": "0417",
-      "scanType": "I3"
+      "restaurantID": "0417",
+      "orderType": "Takeout"
     }
   ]
 }
@@ -279,21 +279,21 @@ final String ns = fxg$FacilityInboundEvent.namespace(); // "urn:fedex:facility"
 **Java Records:**
 
 ```java
-public record FacilityInboundEvent(
+public record RestaurantOrderEvent(
         int eventMessageCount,
-        List<VanLoadScan> vanLoadScans
+        List<KitchenOrderScan> kitchenOrderScans
 ) {}
 
-public record VanLoadScan(
-        String facilityID,
-        String scanType
+public record KitchenOrderScan(
+        String restaurantID,
+        String orderType
 ) {}
 ```
 
 **Usage:**
 
 ```java
-final var event = JSON.parse(FacilityInboundEvent.class, json);
+final var event = JSON.parse(RestaurantOrderEvent.class, json);
 final String outputJson = JSON.stringify(event);
 ```
 
@@ -337,9 +337,9 @@ Focused sub-exceptions with rich path context:
 * `RecordConstructionException`
 
 Example rich path messages:
-* `Missing XML element <ScannedBarcode> required by com.example.VanLoadScan.ScannedBarcode at /FacilityInboundEvent/VanLoadScan.`
-* `Excess JSON property "vehicle" at $.vehicle. No matching record component exists in com.example.ScanSummary.`
-* `Cannot convert JSON value "abc" to int for com.example.PackageData.packageCount at $.packageCount.`
+* `Missing XML element <OrderTicketNumber> required by com.example.KitchenOrderScan.OrderTicketNumber at /RestaurantOrderEvent/KitchenOrderScan.`
+* `Excess JSON property "table" at $.table. No matching record component exists in com.example.KitchenOrderScan.`
+* `Cannot convert JSON value "abc" to int for com.example.OrderData.itemCount at $.itemCount.`
 
 ---
 

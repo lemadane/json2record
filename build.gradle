@@ -79,24 +79,34 @@ publishing {
             pom {
                 name = 'record-data'
                 description = 'Java XML and JSON Record Mapping Library'
-                url = 'https://github.com/json2record/record-data'
+                url = 'https://github.com/lemonade/record-data'
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'The MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
                     }
                 }
                 developers {
                     developer {
-                        id = 'json2record'
-                        name = 'json2record team'
+                        id = 'lemonade'
+                        name = 'Lemonade Team'
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/json2record/record-data.git'
-                    developerConnection = 'scm:git:ssh://github.com/json2record/record-data.git'
-                    url = 'https://github.com/json2record/record-data'
+                    connection = 'scm:git:git://github.com/lemonade/record-data.git'
+                    developerConnection = 'scm:git:ssh://github.com/lemonade/record-data.git'
+                    url = 'https://github.com/lemonade/record-data'
                 }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/" + (System.getenv("GITHUB_REPOSITORY") ?: "YOUR_GITHUB_USERNAME/record-data"))
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user")
+                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key")
             }
         }
     }

@@ -1,8 +1,8 @@
 # Json2Record
 
-Production-ready, zero-dependency standard Java 17+ library for bi-directional mapping between JSON/XML documents and strongly typed Java records.
+Production-ready, zero-dependency standard Java 17+ library for bi-directional mapping between JSON and XML documents and strongly typed Java records.
 
-Built purely on Java reflection and standard APIs, `Json2Record` requires no third-party XML/JSON libraries and works seamlessly across Spring Boot, Quarkus, Micronaut, and standalone JVM applications.
+Built purely on Java reflection and standard APIs, `Json2Record` requires no third-party JSON libraries and works seamlessly across Spring Boot, Quarkus, Micronaut, and standalone JVM applications.
 
 ---
 

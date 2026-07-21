@@ -1,6 +1,6 @@
 package io.lemonade.json2record.naming;
 
-import io.lemonade.json2record.NameEncodingException;
+import io.lemonade.json2record.exceptions.NameEncodingException;
 
 import java.util.Objects;
 

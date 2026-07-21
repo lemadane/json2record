@@ -1,4 +1,4 @@
-package io.lemonade.json2record;
+package io.lemonade.json2record.exceptions;
 
 /**
  * Exception thrown when reflective record instantiation fails.

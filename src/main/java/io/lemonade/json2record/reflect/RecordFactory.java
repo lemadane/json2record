@@ -1,6 +1,6 @@
 package io.lemonade.json2record.reflect;
 
-import io.lemonade.json2record.RecordConstructionException;
+import io.lemonade.json2record.exceptions.RecordConstructionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

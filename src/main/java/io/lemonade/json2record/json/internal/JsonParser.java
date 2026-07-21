@@ -1,6 +1,6 @@
 package io.lemonade.json2record.json.internal;
 
-import io.lemonade.json2record.JsonMappingException;
+import io.lemonade.json2record.exceptions.JsonMappingException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

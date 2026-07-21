@@ -1,6 +1,6 @@
 package io.lemonade.json2record.json.internal;
 
-import io.lemonade.json2record.JsonMappingException;
+import io.lemonade.json2record.exceptions.JsonMappingException;
 import io.lemonade.json2record.naming.DataNameCodec;
 import io.lemonade.json2record.reflect.RecordIntrospector;
 import io.lemonade.json2record.reflect.RecordMetadata;

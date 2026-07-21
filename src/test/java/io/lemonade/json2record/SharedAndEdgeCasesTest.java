@@ -1,8 +1,11 @@
 package io.lemonade.json2record;
 
-import io.lemonade.json2record.json.JSON;
-import io.lemonade.json2record.xml.XML;
+import io.lemonade.json2record.exceptions.DataMappingException;
+import io.lemonade.json2record.exceptions.TypeConversionException;
+import io.lemonade.json2record.exceptions.RecordConstructionException;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -29,6 +32,7 @@ class SharedAndEdgeCasesTest {
         }
     }
 
+    @DisplayName("Xml Null Arguments Rejected")
     @Test
     void testXmlNullArgumentsRejected() {
         assertThatThrownBy(() -> XML.parse(null, "<xml/>"))
@@ -47,6 +51,7 @@ class SharedAndEdgeCasesTest {
                 .isInstanceOf(NullPointerException.class);
     }
 
+    @DisplayName("Json Null Arguments Rejected")
     @Test
     void testJsonNullArgumentsRejected() {
         assertThatThrownBy(() -> JSON.parse(null, "{}"))
@@ -65,6 +70,7 @@ class SharedAndEdgeCasesTest {
                 .isInstanceOf(NullPointerException.class);
     }
 
+    @DisplayName("Non Record Target Class Rejected")
     @Test
     @SuppressWarnings({"unchecked", "rawtypes"})
     void testNonRecordTargetClassRejected() {
@@ -87,6 +93,7 @@ class SharedAndEdgeCasesTest {
                 .hasMessageContaining("Target type is not a Java record class");
     }
 
+    @DisplayName("Record Constructor Failure Reporting")
     @Test
     void testRecordConstructorFailureReporting() {
         String xml = "<FailingConstructorRecord><val>invalid</val></FailingConstructorRecord>";
@@ -100,6 +107,7 @@ class SharedAndEdgeCasesTest {
                 .hasMessageContaining("Validation failed in constructor");
     }
 
+    @DisplayName("Concurrent Metadata Caching")
     @Test
     void testConcurrentMetadataCaching() throws InterruptedException {
         int threads = 10;
@@ -127,6 +135,7 @@ class SharedAndEdgeCasesTest {
         assertThat(successCount.get()).isEqualTo(threads);
     }
 
+    @DisplayName("Exception Path Rich Messages")
     @Test
     void testExceptionPathRichMessages() {
         record Sub(int count) {}

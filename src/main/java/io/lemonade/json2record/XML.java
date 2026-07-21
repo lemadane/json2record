@@ -1,6 +1,8 @@
 package io.lemonade.json2record;
 
-import io.lemonade.json2record.RecordConstructionException;
+import io.lemonade.json2record.exceptions.XmlMappingException;
+
+import io.lemonade.json2record.exceptions.RecordConstructionException;
 import io.lemonade.json2record.xml.internal.XmlRecordReader;
 import io.lemonade.json2record.xml.internal.XmlRecordWriter;
 
@@ -23,7 +25,7 @@ public final class XML {
      * @return the parsed record instance.
      * @throws NullPointerException if any argument is null.
      * @throws RecordConstructionException if recordType is not a Java record class.
-     * @throws io.lemonade.json2record.XmlMappingException for structural, conversion, or mapping errors.
+     * @throws io.lemonade.json2record.exceptions.XmlMappingException for structural, conversion, or mapping errors.
      */
     public static <T extends Record> T parse(Class<T> recordType, String xml) {
         Objects.requireNonNull(recordType, "recordType must not be null");
@@ -43,7 +45,7 @@ public final class XML {
      * @return the parsed record instance.
      * @throws NullPointerException if any argument is null.
      * @throws RecordConstructionException if recordType is not a Java record class.
-     * @throws io.lemonade.json2record.XmlMappingException for conversion or mapping errors.
+     * @throws io.lemonade.json2record.exceptions.XmlMappingException for conversion or mapping errors.
      */
     public static <T extends Record> T partialParse(Class<T> recordType, String xml) {
         Objects.requireNonNull(recordType, "recordType must not be null");
@@ -60,7 +62,7 @@ public final class XML {
      * @param xmlRecord the record hierarchy to convert.
      * @return compact XML representation.
      * @throws NullPointerException if xmlRecord is null.
-     * @throws io.lemonade.json2record.XmlMappingException if stringification fails.
+     * @throws io.lemonade.json2record.exceptions.XmlMappingException if stringification fails.
      */
     public static String stringify(Record xmlRecord) {
         Objects.requireNonNull(xmlRecord, "xmlRecord must not be null");

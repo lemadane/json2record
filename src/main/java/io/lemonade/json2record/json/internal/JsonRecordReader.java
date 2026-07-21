@@ -1,9 +1,9 @@
 package io.lemonade.json2record.json.internal;
 
-import io.lemonade.json2record.ExcessDataException;
-import io.lemonade.json2record.JsonMappingException;
-import io.lemonade.json2record.MissingDataException;
-import io.lemonade.json2record.TypeConversionException;
+import io.lemonade.json2record.exceptions.ExcessDataException;
+import io.lemonade.json2record.exceptions.JsonMappingException;
+import io.lemonade.json2record.exceptions.MissingDataException;
+import io.lemonade.json2record.exceptions.TypeConversionException;
 import io.lemonade.json2record.convert.DefaultValueProvider;
 import io.lemonade.json2record.convert.TypeConverter;
 import io.lemonade.json2record.naming.DataNameCodec;

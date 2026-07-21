@@ -1,10 +1,12 @@
 package io.lemonade.json2record.xml;
 
-import io.lemonade.json2record.ExcessDataException;
-import io.lemonade.json2record.MissingDataException;
-import io.lemonade.json2record.TypeConversionException;
-import io.lemonade.json2record.XmlMappingException;
+import io.lemonade.json2record.exceptions.ExcessDataException;
+import io.lemonade.json2record.exceptions.MissingDataException;
+import io.lemonade.json2record.exceptions.TypeConversionException;
+import io.lemonade.json2record.XML;
+import io.lemonade.json2record.exceptions.XmlMappingException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,6 +93,7 @@ class XmlMappingTest {
 
     // --- Tests ---
 
+    @DisplayName("Strict Parse Flat Record")
     @Test
     void testStrictParseFlatRecord() {
         String xml = "<SimpleFacility><FacilityID>0603</FacilityID></SimpleFacility>";
@@ -98,6 +101,7 @@ class XmlMappingTest {
         assertThat(facility.FacilityID()).isEqualTo("0603");
     }
 
+    @DisplayName("Strict Parse Nested Records And Static Attributes")
     @Test
     void testStrictParseNestedRecordsAndStaticAttributes() {
         String xml = """
@@ -127,6 +131,7 @@ class XmlMappingTest {
         assertThat(event.PlaceHolder()).isNotNull();
     }
 
+    @DisplayName("Repeated Elements Into List")
     @Test
     void testRepeatedElementsIntoList() {
         String xml = """
@@ -164,6 +169,7 @@ class XmlMappingTest {
         assertThat(event.VanLoadScan().get(1).FacilityID()).isEqualTo("0417");
     }
 
+    @DisplayName("Static Field Visibilities And Unmatched Attributes Ignored")
     @Test
     void testStaticFieldVisibilitiesAndUnmatchedAttributesIgnored() {
         String xml = """
@@ -180,6 +186,7 @@ class XmlMappingTest {
         assertThat(StaticFieldsRecord.getPrivateAttr()).isEqualTo("priv");
     }
 
+    @DisplayName("Final Static Field Assignment Throws")
     @Test
     void testFinalStaticFieldAssignmentThrows() {
         String xml = "<FinalStaticRecord Version=\"2.0\"><id>1</id></FinalStaticRecord>";
@@ -188,6 +195,7 @@ class XmlMappingTest {
                 .hasMessageContaining("final static field");
     }
 
+    @DisplayName("Strict Parse Missing Element Throws")
     @Test
     void testStrictParseMissingElementThrows() {
         String xml = "<SimpleFacility></SimpleFacility>";
@@ -196,6 +204,7 @@ class XmlMappingTest {
                 .hasMessageContaining("Missing XML element <FacilityID>");
     }
 
+    @DisplayName("Strict Parse Excess Element Throws")
     @Test
     void testStrictParseExcessElementThrows() {
         String xml = "<SimpleFacility><FacilityID>0603</FacilityID><Extra>value</Extra></SimpleFacility>";
@@ -204,6 +213,7 @@ class XmlMappingTest {
                 .hasMessageContaining("Excess XML element <Extra>");
     }
 
+    @DisplayName("Duplicate Element For Non List Throws")
     @Test
     void testDuplicateElementForNonListThrows() {
         String xml = "<SimpleFacility><FacilityID>0603</FacilityID><FacilityID>0417</FacilityID></SimpleFacility>";
@@ -212,6 +222,7 @@ class XmlMappingTest {
                 .hasMessageContaining("Multiple XML elements");
     }
 
+    @DisplayName("Root Name Mismatch Throws")
     @Test
     void testRootNameMismatchThrows() {
         String xml = "<WrongRoot><FacilityID>0603</FacilityID></WrongRoot>";
@@ -220,6 +231,7 @@ class XmlMappingTest {
                 .hasMessageContaining("Root XML element <WrongRoot> does not match requested record type");
     }
 
+    @DisplayName("Namespaced Xml Mapping")
     @Test
     void testNamespacedXmlMapping() {
         String xml = """
@@ -240,6 +252,7 @@ class XmlMappingTest {
         assertThat(stringified).contains("fxg:FacilityID>0603<");
     }
 
+    @DisplayName("Partial Parsing Missing Values Default")
     @Test
     void testPartialParsingMissingValuesDefault() {
         String xml = "<PartialRecord><id>P1</id></PartialRecord>";
@@ -252,6 +265,7 @@ class XmlMappingTest {
         assertThat(partial.tags()).isEmpty();
     }
 
+    @DisplayName("Partial Parsing Present Malformed Value Throws")
     @Test
     void testPartialParsingPresentMalformedValueThrows() {
         String xml = "<PartialRecord><id>P1</id><count>abc</count></PartialRecord>";
@@ -260,6 +274,7 @@ class XmlMappingTest {
                 .hasMessageContaining("Cannot convert value \"abc\" to int");
     }
 
+    @DisplayName("Xml Security Xxe Rejection")
     @Test
     void testXmlSecurityXxeRejection() {
         String xmlWithDtd = """
@@ -274,6 +289,7 @@ class XmlMappingTest {
                 .isInstanceOf(XmlMappingException.class);
     }
 
+    @DisplayName("Stringification And Round Trip")
     @Test
     void testStringificationAndRoundTrip() {
         SimpleFacility original = new SimpleFacility("0603");
@@ -284,6 +300,7 @@ class XmlMappingTest {
         assertThat(roundTripped).isEqualTo(original);
     }
 
+    @DisplayName("Text And Attribute Escaping")
     @Test
     void testTextAndAttributeEscaping() {
         record EscapedRecord(String text) {

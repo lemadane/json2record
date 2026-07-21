@@ -1,7 +1,7 @@
 package io.lemonade.json2record.reflect;
 
-import io.lemonade.json2record.DataMappingException;
-import io.lemonade.json2record.RecordConstructionException;
+import io.lemonade.json2record.exceptions.DataMappingException;
+import io.lemonade.json2record.exceptions.RecordConstructionException;
 import io.lemonade.json2record.naming.DataNameCodec;
 
 import java.lang.reflect.Constructor;

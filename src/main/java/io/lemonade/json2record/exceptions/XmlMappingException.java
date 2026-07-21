@@ -1,4 +1,4 @@
-package io.lemonade.json2record;
+package io.lemonade.json2record.exceptions;
 
 /**
  * Exception thrown for XML specific parsing or stringification mapping errors.

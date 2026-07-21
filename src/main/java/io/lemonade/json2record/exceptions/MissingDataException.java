@@ -1,4 +1,4 @@
-package io.lemonade.json2record;
+package io.lemonade.json2record.exceptions;
 
 /**
  * Exception thrown when a required record component has no matching XML element or JSON property in strict mode.

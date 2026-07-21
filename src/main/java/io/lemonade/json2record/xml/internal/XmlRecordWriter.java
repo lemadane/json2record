@@ -1,6 +1,6 @@
 package io.lemonade.json2record.xml.internal;
 
-import io.lemonade.json2record.XmlMappingException;
+import io.lemonade.json2record.exceptions.XmlMappingException;
 import io.lemonade.json2record.convert.TypeConverter;
 import io.lemonade.json2record.naming.DataNameCodec;
 import io.lemonade.json2record.reflect.RecordIntrospector;

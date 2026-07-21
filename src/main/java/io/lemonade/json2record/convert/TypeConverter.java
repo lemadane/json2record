@@ -1,6 +1,6 @@
 package io.lemonade.json2record.convert;
 
-import io.lemonade.json2record.TypeConversionException;
+import io.lemonade.json2record.exceptions.TypeConversionException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

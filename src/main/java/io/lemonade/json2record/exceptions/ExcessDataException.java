@@ -1,4 +1,4 @@
-package io.lemonade.json2record;
+package io.lemonade.json2record.exceptions;
 
 /**
  * Exception thrown when an undeclared XML element or JSON property is encountered in strict mode.

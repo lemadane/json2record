@@ -1,13 +1,15 @@
 package io.lemonade.json2record.naming;
 
-import io.lemonade.json2record.NameEncodingException;
+import io.lemonade.json2record.exceptions.NameEncodingException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DataNameCodecTest {
 
+    @DisplayName("Colon Encoding")
     @Test
     void testColonEncoding() {
         String encoded = DataNameCodec.encode("fxg:FacilityInboundEvent");
@@ -15,6 +17,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("fxg:FacilityInboundEvent");
     }
 
+    @DisplayName("Xmlns Prefix Encoding")
     @Test
     void testXmlnsPrefixEncoding() {
         String encoded = DataNameCodec.encode("xmlns:fxg");
@@ -22,6 +25,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("xmlns:fxg");
     }
 
+    @DisplayName("Hyphen Encoding")
     @Test
     void testHyphenEncoding() {
         String encoded = DataNameCodec.encode("Facility-ID");
@@ -29,6 +33,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("Facility-ID");
     }
 
+    @DisplayName("Dot Encoding")
     @Test
     void testDotEncoding() {
         String encoded = DataNameCodec.encode("Facility.ID");
@@ -36,6 +41,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("Facility.ID");
     }
 
+    @DisplayName("Space Encoding")
     @Test
     void testSpaceEncoding() {
         String encoded = DataNameCodec.encode("display name");
@@ -43,6 +49,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("display name");
     }
 
+    @DisplayName("Dollar Encoding")
     @Test
     void testDollarEncoding() {
         String encoded = DataNameCodec.encode("price$value");
@@ -50,6 +57,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("price$value");
     }
 
+    @DisplayName("Unicode Escape Encoding")
     @Test
     void testUnicodeEscapeEncoding() {
         String input = "emoji_😀_test";
@@ -58,6 +66,7 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo(input);
     }
 
+    @DisplayName("Digit At Start Encoding")
     @Test
     void testDigitAtStartEncoding() {
         String encoded = DataNameCodec.encode("0603");
@@ -65,12 +74,14 @@ class DataNameCodecTest {
         assertThat(DataNameCodec.decode(encoded)).isEqualTo("0603");
     }
 
+    @DisplayName("Empty String")
     @Test
     void testEmptyString() {
         assertThat(DataNameCodec.encode("")).isEqualTo("");
         assertThat(DataNameCodec.decode("")).isEqualTo("");
     }
 
+    @DisplayName("Invalid Unicode Escape Throws")
     @Test
     void testInvalidUnicodeEscapeThrows() {
         assertThatThrownBy(() -> DataNameCodec.decode("$uXYZ$"))
@@ -80,6 +91,7 @@ class DataNameCodecTest {
                 .isInstanceOf(NameEncodingException.class);
     }
 
+    @DisplayName("Collision Resistance")
     @Test
     void testCollisionResistance() {
         String enc1 = DataNameCodec.encode("a-b");

@@ -1,10 +1,12 @@
 package io.lemonade.json2record.json;
 
-import io.lemonade.json2record.ExcessDataException;
-import io.lemonade.json2record.JsonMappingException;
-import io.lemonade.json2record.MissingDataException;
-import io.lemonade.json2record.TypeConversionException;
+import io.lemonade.json2record.exceptions.ExcessDataException;
+import io.lemonade.json2record.JSON;
+import io.lemonade.json2record.exceptions.JsonMappingException;
+import io.lemonade.json2record.exceptions.MissingDataException;
+import io.lemonade.json2record.exceptions.TypeConversionException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -70,6 +72,7 @@ class JsonMappingTest {
 
     // --- Tests ---
 
+    @DisplayName("Strict Parse Flat And Nested Record")
     @Test
     void testStrictParseFlatAndNestedRecord() {
         String json = """
@@ -95,6 +98,7 @@ class JsonMappingTest {
         assertThat(event.vanLoadScans().get(1).facilityID()).isEqualTo("0417");
     }
 
+    @DisplayName("Scalar Types And Precision")
     @Test
     void testScalarTypesAndPrecision() {
         String json = """
@@ -133,6 +137,7 @@ class JsonMappingTest {
         assertThat(rec.nullVal()).isNull();
     }
 
+    @DisplayName("Duplicate Keys Rejection")
     @Test
     void testDuplicateKeysRejection() {
         String json = """
@@ -147,6 +152,7 @@ class JsonMappingTest {
                 .hasMessageContaining("Duplicate JSON key \"facilityID\"");
     }
 
+    @DisplayName("Trailing Content Rejection")
     @Test
     void testTrailingContentRejection() {
         String json = """
@@ -158,6 +164,7 @@ class JsonMappingTest {
                 .hasMessageContaining("Trailing non-whitespace content");
     }
 
+    @DisplayName("Missing Property In Strict Parse Throws")
     @Test
     void testMissingPropertyInStrictParseThrows() {
         String json = """
@@ -169,6 +176,7 @@ class JsonMappingTest {
                 .hasMessageContaining("Missing JSON property \"scanType\"");
     }
 
+    @DisplayName("Excess Property In Strict Parse Throws")
     @Test
     void testExcessPropertyInStrictParseThrows() {
         String json = """
@@ -180,6 +188,7 @@ class JsonMappingTest {
                 .hasMessageContaining("Excess JSON property \"extraProp\"");
     }
 
+    @DisplayName("Static Fields Ignored In Json")
     @Test
     void testStaticFieldsIgnoredInJson() {
         String json = """
@@ -203,6 +212,7 @@ class JsonMappingTest {
         assertThat(stringified).isEqualTo("{\"name\":\"Test\"}");
     }
 
+    @DisplayName("Special Character Escaping And Key Codec")
     @Test
     void testSpecialCharacterEscapingAndKeyCodec() {
         String json = """
@@ -227,6 +237,7 @@ class JsonMappingTest {
         assertThat(outputJson).contains("\"price$value\":\"$50\"");
     }
 
+    @DisplayName("Unicode Escapes And Surrogate Pairs")
     @Test
     void testUnicodeEscapesAndSurrogatePairs() {
         record TextRecord(String message) {}
@@ -236,6 +247,7 @@ class JsonMappingTest {
         assertThat(rec.message()).isEqualTo("Hello Goodbye 😀");
     }
 
+    @DisplayName("Partial Parsing Missing Defaults")
     @Test
     void testPartialParsingMissingDefaults() {
         String json = "{ \"id\": \"P100\" }";
@@ -247,6 +259,7 @@ class JsonMappingTest {
         assertThat(rec.items()).isEmpty();
     }
 
+    @DisplayName("Non Finite Number Rejection")
     @Test
     void testNonFiniteNumberRejection() {
         record DoubleRecord(double val) {}
@@ -257,6 +270,7 @@ class JsonMappingTest {
                 .hasMessageContaining("Non-finite number value");
     }
 
+    @DisplayName("Cycle Detection In Json Stringify")
     @Test
     void testCycleDetectionInJsonStringify() {
         record CycleNode(String name, List<Object> children) {}
@@ -270,6 +284,7 @@ class JsonMappingTest {
                 .hasMessageContaining("Cycle detected");
     }
 
+    @DisplayName("Round Trip")
     @Test
     void testRoundTrip() {
         VanLoadScan scan = new VanLoadScan("0603", "V3");

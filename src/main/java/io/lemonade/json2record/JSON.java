@@ -1,6 +1,8 @@
-package io.lemonade.json2record.json;
+package io.lemonade.json2record;
 
-import io.lemonade.json2record.RecordConstructionException;
+import io.lemonade.json2record.exceptions.JsonMappingException;
+
+import io.lemonade.json2record.exceptions.RecordConstructionException;
 import io.lemonade.json2record.json.internal.JsonRecordReader;
 import io.lemonade.json2record.json.internal.JsonRecordWriter;
 
@@ -23,7 +25,7 @@ public final class JSON {
      * @return the parsed record instance.
      * @throws NullPointerException if any argument is null.
      * @throws RecordConstructionException if recordType is not a Java record class.
-     * @throws io.lemonade.json2record.JsonMappingException for structural, conversion, or mapping errors.
+     * @throws io.lemonade.json2record.exceptions.JsonMappingException for structural, conversion, or mapping errors.
      */
     public static <T extends Record> T parse(Class<T> recordType, String json) {
         Objects.requireNonNull(recordType, "recordType must not be null");
@@ -43,7 +45,7 @@ public final class JSON {
      * @return the parsed record instance.
      * @throws NullPointerException if any argument is null.
      * @throws RecordConstructionException if recordType is not a Java record class.
-     * @throws io.lemonade.json2record.JsonMappingException for conversion or mapping errors.
+     * @throws io.lemonade.json2record.exceptions.JsonMappingException for conversion or mapping errors.
      */
     public static <T extends Record> T partialParse(Class<T> recordType, String json) {
         Objects.requireNonNull(recordType, "recordType must not be null");
@@ -55,12 +57,12 @@ public final class JSON {
     }
 
     /**
-     * Converts a record hierarchy into a compact JSON string.
+     * Converts a record hierarchy into a compact JSON document string.
      *
      * @param jsonRecord the record hierarchy to convert.
      * @return compact JSON representation.
      * @throws NullPointerException if jsonRecord is null.
-     * @throws io.lemonade.json2record.JsonMappingException if stringification fails.
+     * @throws io.lemonade.json2record.exceptions.JsonMappingException if stringification fails.
      */
     public static String stringify(Record jsonRecord) {
         Objects.requireNonNull(jsonRecord, "jsonRecord must not be null");

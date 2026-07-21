@@ -1,18 +1,26 @@
 package io.lemonade.json2record;
 
+import io.lemonade.json2record.exceptions.DataMappingException;
+import io.lemonade.json2record.exceptions.XmlMappingException;
+import io.lemonade.json2record.exceptions.JsonMappingException;
+import io.lemonade.json2record.exceptions.MissingDataException;
+import io.lemonade.json2record.exceptions.ExcessDataException;
+import io.lemonade.json2record.exceptions.TypeConversionException;
+import io.lemonade.json2record.exceptions.NameEncodingException;
+import io.lemonade.json2record.exceptions.RecordConstructionException;
+
 import io.lemonade.json2record.convert.DefaultValueProvider;
 import io.lemonade.json2record.convert.TypeConverter;
-import io.lemonade.json2record.json.JSON;
 import io.lemonade.json2record.json.internal.JsonParser;
 import io.lemonade.json2record.json.internal.JsonRecordReader;
 import io.lemonade.json2record.json.internal.JsonRecordWriter;
 import io.lemonade.json2record.reflect.RecordFactory;
 import io.lemonade.json2record.reflect.RecordIntrospector;
 import io.lemonade.json2record.reflect.RecordMetadata;
-import io.lemonade.json2record.xml.XML;
 import io.lemonade.json2record.xml.internal.XmlRecordReader;
 import io.lemonade.json2record.xml.internal.XmlRecordWriter;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -38,6 +46,7 @@ class CoverageTest {
         public static String attr2 = null;
     }
 
+    @DisplayName("Exception Cause Constructors")
     @Test
     void testExceptionCauseConstructors() {
         Throwable cause = new RuntimeException("cause");
@@ -57,6 +66,7 @@ class CoverageTest {
 
     public static class OrdinaryClass {}
 
+    @DisplayName("Type Converter Exhaustive")
     @Test
     void testTypeConverterExhaustive() {
         assertThat(TypeConverter.convert(String.class, "hello", "path")).isEqualTo("hello");
@@ -99,6 +109,7 @@ class CoverageTest {
         assertThatThrownBy(() -> TypeConverter.convert(java.util.Date.class, "val", "path")).isInstanceOf(TypeConversionException.class);
     }
 
+    @DisplayName("Default Value Provider Exhaustive")
     @Test
     void testDefaultValueProviderExhaustive() {
         RecordMetadata meta = RecordIntrospector.inspect(TestPrimitives.class);
@@ -108,6 +119,7 @@ class CoverageTest {
         }
     }
 
+    @DisplayName("Json Parser Escapes And Numbers")
     @Test
     void testJsonParserEscapesAndNumbers() {
         String jsonStr = "{\"msg\":\"slash \\/ backslash \\\\ quote \\\" b \\b f \\f n \\n r \\r t \\t\", \"n1\": -10.5, \"n2\": 1e5, \"n3\": 2.5E-2}";
@@ -137,6 +149,7 @@ class CoverageTest {
                 .isInstanceOf(JsonMappingException.class);
     }
 
+    @DisplayName("Json Record Writer Edge Cases")
     @Test
     void testJsonRecordWriterEdgeCases() {
         TestOpt optEmpty = new TestOpt(Optional.empty(), Optional.of(42));
@@ -166,6 +179,7 @@ class CoverageTest {
         assertThat(jsonCtrl).contains("\\u0001");
     }
 
+    @DisplayName("Json Record Reader Edge Cases")
     @Test
     void testJsonRecordReaderEdgeCases() {
         record PrimRec(int count) {}
@@ -182,6 +196,7 @@ class CoverageTest {
         assertThat(rootPrimList.numbers()).containsExactly(1, 2, 3);
     }
 
+    @DisplayName("Xml Writer And Reader Edge Cases")
     @Test
     void testXmlWriterAndReaderEdgeCases() {
         TestOpt optRec = new TestOpt(Optional.empty(), Optional.of(99));
@@ -204,6 +219,7 @@ class CoverageTest {
         assertThat(parsedEmpty.record()).isNotNull();
     }
 
+    @DisplayName("Record Metadata Methods")
     @Test
     void testRecordMetadataMethods() {
         RecordMetadata meta = RecordIntrospector.inspect(TestOpt.class);
@@ -228,6 +244,7 @@ class CoverageTest {
         assertThat(comp.isNestedRecord()).isFalse();
     }
 
+    @DisplayName("Json Record Reader Non Object Roots And Types")
     @Test
     void testJsonRecordReaderNonObjectRootsAndTypes() {
         assertThatThrownBy(() -> JSON.parse(Nested.class, "123"))
@@ -261,6 +278,7 @@ class CoverageTest {
                 .hasMessageContaining("Expected JSON object for nested record");
     }
 
+    @DisplayName("Json Record Writer Collection Cycle And Escaping")
     @Test
     void testJsonRecordWriterCollectionCycleAndEscaping() {
         record ListCycle(List<Object> items) {}
@@ -278,6 +296,7 @@ class CoverageTest {
         assertThat(jsonStr).contains("\\\"").contains("\\\\").contains("\\b").contains("\\f").contains("\\n").contains("\\r").contains("\\t").contains("\\u0005");
     }
 
+    @DisplayName("Xml Reader Empty Primitive In Partial Mode")
     @Test
     void testXmlReaderEmptyPrimitiveInPartialMode() {
         String xml = "<TestPrimitives><b/></TestPrimitives>";
@@ -286,6 +305,7 @@ class CoverageTest {
                 .hasMessageContaining("Empty XML element <b> cannot be mapped to primitive type byte");
     }
 
+    @DisplayName("Json Parser Syntax Errors Exhaustive")
     @Test
     void testJsonParserSyntaxErrorsExhaustive() {
         record Dummy(String a, boolean b, String c, double d) {}

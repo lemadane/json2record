@@ -54,7 +54,7 @@ dependencies {
 
 The library provides two thread-safe final utility classes:
 
-### `io.lemonade.json2record.xml.XML`
+### `io.lemonade.json2record.XML`
 
 ```java
 public final class XML {
@@ -64,7 +64,7 @@ public final class XML {
 }
 ```
 
-### `io.lemonade.json2record.json.JSON`
+### `io.lemonade.json2record.JSON`
 
 ```java
 public final class JSON {

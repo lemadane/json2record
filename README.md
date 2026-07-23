@@ -9,8 +9,8 @@ Built purely on Java reflection and standard APIs, `Json2Record` requires no thi
 ## Key Requirements & Coordinates
 
 * **Java Version**: Minimum required JVM version is **Java 17**.
-* **Maven Coordinates**: `io.lemonade:record-data:0.1.0-SNAPSHOT`
-* **Base Package**: `io.lemonade.json2record`
+* **Maven Coordinates**: `io.lemadane:record-data:0.1.0-SNAPSHOT`
+* **Base Package**: `io.lemadane.json2record`
 
 ```text
 XML.parse() and JSON.parse()
@@ -34,7 +34,7 @@ JSON properties do not map to static fields.
 
 ```groovy
 dependencies {
-    implementation 'io.lemonade:record-data:0.1.0-SNAPSHOT'
+    implementation 'io.lemadane:record-data:0.1.0-SNAPSHOT'
 }
 ```
 
@@ -42,7 +42,7 @@ dependencies {
 
 ```xml
 <dependency>
-    <groupId>io.lemonade</groupId>
+    <groupId>io.lemadane</groupId>
     <artifactId>record-data</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
@@ -54,7 +54,7 @@ dependencies {
 
 The library provides two thread-safe final utility classes:
 
-### `io.lemonade.json2record.XML`
+### `io.lemadane.json2record.XML`
 
 ```java
 public final class XML {
@@ -64,7 +64,7 @@ public final class XML {
 }
 ```
 
-### `io.lemonade.json2record.JSON`
+### `io.lemadane.json2record.JSON`
 
 ```java
 public final class JSON {

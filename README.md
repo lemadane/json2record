@@ -26,10 +26,10 @@ String xml = XML.stringify(Record record);
 // converts Java Record to XML.
 
 Record record = JSON.partialParse(Class<Record> Record.class, String json);
-// json data maps to declared Java Record components, ignoring other declared data,  
+// json data maps to declared Java Record components, ignoring other undeclared data,  
 
 Record record = XML.partialParse(Class<Record> Record.class, String xml);
-// xml data maps to declared Java Record components, ignoring other declared data,  
+// xml data maps to declared Java Record components, ignoring other undeclared data,  
 // XML attributes map to matching mutable static fields.
 
 ```

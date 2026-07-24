@@ -12,18 +12,26 @@ Built purely on Java reflection and standard APIs, `Json2Record` requires no thi
 * **Maven Coordinates**: `io.lemadane:record-data:0.1.0-SNAPSHOT`
 * **Base Package**: `io.lemadane.json2record`
 
-```text
-XML.parse() and JSON.parse()
-require complete structural matching.
+```java
+Record record = JSON.parse(Class<Record> Record.class, String json);
+// converts JSON to Java Record.
 
-XML.partialParse() and JSON.partialParse()
-map only declared record components and ignore undeclared input data.
+Record record = XML.parse(Class<Record> Record.class, String xml);
+// converts XML to Java Record.
 
-There is no parseList(). Lists are represented by List<T>
-record components.
+String json = JSON.stringify(Record record);
+// converts Java Record to JSON.
 
-XML attributes may map to matching mutable static fields.
-JSON properties do not map to static fields.
+String xml = XML.stringify(Record record);
+// converts Java Record to XML.
+
+Record record = JSON.partialParse(Class<Record> Record.class, String json);
+// json data maps to declared Java Record components, ignoring other declared data,  
+
+Record record = XML.partialParse(Class<Record> Record.class, String xml);
+// json data maps to declared Java Record components, ignoring other declared data,  
+// XML attributes map to matching mutable static fields.
+
 ```
 
 ---
